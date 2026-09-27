@@ -178,29 +178,6 @@ struct SdcObjects {
 	}
 	~SdcObjects() = default;
 
-	template <typename T, typename U>
-	void build_normal_result(Tcl_Interp* interp, std::vector<std::tuple<std::string, T, BitSelection>>&& resolved, U& tgt, std::function<size_t(T&)> width, Tcl_Obj*& result) {
-		if (!result)
-			result = Tcl_NewListObj(resolved.size(), nullptr);
-		for (auto [name, obj, matching_bits] : resolved) {
-			for (size_t i = 0; i < width(obj); i++)
-				if (matching_bits.is_set(i)) {
-					Tcl_ListObjAppendElement(interp, result, Tcl_NewStringObj(name.c_str(), name.size()));
-					break;
-				}
-
-		}
-		size_t node_count = get_node_count(interp);
-		tgt.emplace_back(std::move(resolved));
-		log("%zu %zu\n", node_count, tgt.size());
-		log_assert(node_count == tgt.size());
-	}
-	template <typename T>
-	void merge_as_constrained(std::vector<std::tuple<std::string, T, BitSelection>>&& resolved) {
-		for (auto [name, obj, matching_bits] : resolved) {
-			merge_or_init(std::make_pair(name, obj), constrained_pins, matching_bits);
-		}
-	}
 	void dump() {
 		std::sort(design_ports.begin(), design_ports.end());
 		std::sort(design_cells.begin(), design_cells.end());

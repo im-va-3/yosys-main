@@ -55,7 +55,7 @@ struct WitnessHierarchyItem {
 template<typename D, typename T>
 void witness_hierarchy(RTLIL::Module *module, D data, T callback);
 
-template<class T> static std::vector<std::string> witness_path(T *obj) {
+template<class T> [[maybe_unused]] static std::vector<std::string> witness_path(T *obj) {
 	std::vector<std::string> path;
 	if (obj->name.isPublic()) {
 		auto hdlname = obj->get_string_attribute(ID::hdlname);
