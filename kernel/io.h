@@ -198,22 +198,22 @@ check_format(std::string_view fmt, int fmt_start, bool *has_escapes, FoundFormat
 }
 
 template <class T>
-static auto has_name_member_imp(int)
+auto has_name_member_imp(int)
 	-> decltype(static_cast<const RTLIL::IdString>(std::declval<T>().name), std::true_type{});
 
 template <class T>
-static auto has_name_member_imp(long)
+auto has_name_member_imp(long)
 	-> std::false_type;
 
 template <class T>
 struct has_name_member : decltype(has_name_member_imp<T>(0)){};
 
 template <class T>
-static auto ptr_has_name_member_imp(int)
+auto ptr_has_name_member_imp(int)
 	-> decltype(static_cast<const RTLIL::IdString>(std::declval<T>()->name), std::true_type{});
 
 template <class T>
-static auto ptr_has_name_member_imp(long)
+auto ptr_has_name_member_imp(long)
 	-> std::false_type;
 
 template <class T>
