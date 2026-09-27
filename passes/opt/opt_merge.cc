@@ -347,13 +347,6 @@ struct OptMergeThreadWorker
 	}
 };
 
-template <typename T>
-void initialize_queues(std::vector<ConcurrentQueue<T>> &queues, int size) {
-	queues.reserve(size);
-	for (int i = 0; i < size; ++i)
-		queues.emplace_back(1);
-}
-
 struct OptMergeWorker
 {
 	int total_count;
