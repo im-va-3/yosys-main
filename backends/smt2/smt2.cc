@@ -70,11 +70,6 @@ struct Smt2Worker
 		return ids[n];
 	}
 
-	template<typename T>
-	const char *get_id(T *obj) {
-		return get_id(obj->name);
-	}
-
 	void makebits(std::string name, int width = 0, std::string comment = std::string())
 	{
 		std::string decl_str;
