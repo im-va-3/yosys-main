@@ -302,3 +302,28 @@ DOCS (e.g.)
 This will build/rebuild yosys as necessary before generating the website
 documentation from the yosys help commands.  To build for pdf instead of html,
 use the `docs-latexpdf` target.
+
+
+## Step-by-step user guide
+
+1. **Install Yosys.** The OSS CAD Suite is the simplest packaged install and includes related tools; use the source-build instructions above when you need to change the compiler/build or build this checkout.
+2. **Prepare a design.** Start with synthesizable Verilog/SystemVerilog and identify its top module. Use a small checked-in example or your own minimal module before adding vendor-specific cells.
+3. **Run the synthesis flow.** From a shell with Yosys on PATH, run the following, replacing the input file and top name:
+
+~~~sh
+mkdir -p build
+yosys -Q -p 'read_verilog -sv path/to/design.sv; hierarchy -top top; synth -top top; stat; write_verilog build/top_synth.v'
+~~~
+
+4. **Inspect each transformation.** Use help and the pass reference to understand read/elaboration, hierarchy, process lowering, optimization, FSM/memory handling, technology mapping, and ABC logic optimization. Run show when Graphviz/xdot are installed to inspect a schematic.
+5. **Target a technology.** Load the relevant cell library and constraints, select the documented techmap/ABC script, synthesize, then inspect area/cell statistics and the emitted netlist.
+6. **Continue to verification or implementation.** Use Yosys output with a downstream place-and-route/timing flow. For formal verification, use the separate SymbiYosys (SBY) project and its documentation.
+
+### Functionality map
+
+- Verilog-2005 and the supported synthesizable SystemVerilog front ends; hierarchy and elaboration.
+- Scriptable synthesis passes for process lowering, optimization, FSMs, memories, technology mapping, and ABC logic synthesis.
+- Netlist/statistics output and schematic visualization; plugins/custom passes can extend the flow.
+- Formal verification is provided by the companion SBY project, not by this synthesis README alone.
+- Use [docs](docs/), [examples](examples/), and the [Yosys manual](https://yosyshq.readthedocs.io/projects/yosys/en/latest/) for pass syntax, front-end limitations, target libraries, and complete command-line options.
+
